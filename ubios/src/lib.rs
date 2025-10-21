@@ -147,22 +147,22 @@ pub struct FunctionId(u16);
 /// UBIOS Function ID Types.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum FunctionIDType {
+    /// System Function: 0x000 - 0x0FF.
     SystemFunction,
+    /// Battery Function: 0x100 - 0x1FF.
     BatteryFunction,
+    /// RAS Function: 0x200 - 0x2FF.
     RASFunction,
+    /// Security Function: 0x300 - 0x3FF.
     SecurityFunction,
+    /// Reserved: 0x400 - 0x7FF.
     Reserved,
+    /// OEM Function: 0x800 - 0xFFF.
     OEMFunction,
 }
 
 impl FunctionId {
     /// Returns the function ID type.
-    /// System Function: 0x000 - 0x0FF.
-    /// Battery Function: 0x100 - 0x1FF.
-    /// RAS Function: 0x200 - 0x2FF.
-    /// Security Function: 0x300 - 0x3FF.
-    /// Reserved: 0x400 - 0x7FF.
-    /// OEM Function: 0x800 - 0xFFF.
     #[inline]
     pub const fn function_type(self) -> FunctionIDType {
         match self.0 {
@@ -185,16 +185,14 @@ pub struct InformationId(u16);
 /// UBIOS Information Message Types.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum InformationIdMessageType {
-    /// Standard Message Type.
+    /// Standard Message Type: 0x000 - 0x07FF.
     StandardMessage,
-    /// OEM-specific Message Type.
+    /// OEM-specific Message Type: 0x800 - 0xFFF.
     OemSpecificMessage,
 }
 
 impl InformationId {
     /// Returns the message type of the information ID.
-    /// Standard: 0x000 - 0x07FF.
-    /// OEM-specific: 0x800 - 0xFFF.
     #[inline]
     pub const fn message_type(self) -> InformationIdMessageType {
         match self.0 & 0xFFF {
@@ -227,7 +225,7 @@ pub enum UserType {
     Bmc = 0x0b,
     /// Basic Input/Output System.
     Bios = 0x01,
-    /// Reserved user type(Undefined).
+    /// Reserved user type (Undefined).
     Reserved,
 }
 
