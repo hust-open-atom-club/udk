@@ -209,9 +209,6 @@ impl InformationId {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct UserId(NonZeroU32);
 
-// TODO user_type(self) -> UserType
-// TODO index(self) -> u32
-
 /// UBIOS user type for UserId.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 #[repr(u8)]
@@ -230,6 +227,31 @@ pub enum UserType {
     Bmc = 0x0b,
     /// Basic Input/Output System.
     Bios = 0x01,
+    /// Reserved user type(Undefined).
+    Reserved,
+}
+
+impl UserId {
+    /// Get the user type of this user ID.
+    #[inline]
+    pub const fn user_type(self) -> UserType {
+        match (self.0.get() >> 24) as u8 {
+            0xff => UserType::Unspecified,
+            0x30 => UserType::TrustedOs,
+            0x20 => UserType::RichOs,
+            0x11 => UserType::EntityThisUbpu,
+            0x10 => UserType::EntityOtherUbpu,
+            0x0b => UserType::Bmc,
+            0x01 => UserType::Bios,
+            _ => UserType::Reserved,
+        }
+    }
+
+    /// Get the index of this user ID.
+    #[inline]
+    pub const fn index(self) -> u32 {
+        self.0.get() & 0x00FF_FFFF
+    }
 }
 
 // TODO unit tests of the above structures, testing all of their functions.
