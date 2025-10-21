@@ -146,32 +146,32 @@ pub struct FunctionId(u16);
 
 /// UBIOS Function ID Types.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub enum FunctionIDType {
+pub enum FunctionIdType {
     /// System Function: 0x000 - 0x0FF.
     SystemFunction,
     /// Battery Function: 0x100 - 0x1FF.
     BatteryFunction,
     /// RAS Function: 0x200 - 0x2FF.
-    RASFunction,
+    RasFunction,
     /// Security Function: 0x300 - 0x3FF.
     SecurityFunction,
     /// Reserved: 0x400 - 0x7FF.
     Reserved,
     /// OEM Function: 0x800 - 0xFFF.
-    OEMFunction,
+    OemFunction,
 }
 
 impl FunctionId {
     /// Returns the function ID type.
     #[inline]
-    pub const fn function_type(self) -> FunctionIDType {
+    pub const fn function_type(self) -> FunctionIdType {
         match self.0 {
-            0x000..=0x0FF => FunctionIDType::SystemFunction,
-            0x100..=0x1FF => FunctionIDType::BatteryFunction,
-            0x200..=0x2FF => FunctionIDType::RASFunction,
-            0x300..=0x3FF => FunctionIDType::SecurityFunction,
-            0x400..=0x7FF => FunctionIDType::Reserved,
-            0x800..=0xFFF => FunctionIDType::OEMFunction,
+            0x000..=0x0FF => FunctionIdType::SystemFunction,
+            0x100..=0x1FF => FunctionIdType::BatteryFunction,
+            0x200..=0x2FF => FunctionIdType::RasFunction,
+            0x300..=0x3FF => FunctionIdType::SecurityFunction,
+            0x400..=0x7FF => FunctionIdType::Reserved,
+            0x800..=0xFFF => FunctionIdType::OemFunction,
             _ => unreachable!(),
         }
     }
@@ -182,10 +182,10 @@ impl FunctionId {
 #[repr(transparent)]
 pub struct InformationId(u16);
 
-/// UBIOS Information Message Types.
+/// UBIOS information message types.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum InformationIdMessageType {
-    /// Standard Message Type: 0x000 - 0x07FF.
+    /// Standard Message Type: 0x000 - 0x7FF.
     StandardMessage,
     /// OEM-specific Message Type: 0x800 - 0xFFF.
     OemSpecificMessage,
@@ -196,7 +196,7 @@ impl InformationId {
     #[inline]
     pub const fn message_type(self) -> InformationIdMessageType {
         match self.0 & 0xFFF {
-            0x000..=0x07FF => InformationIdMessageType::StandardMessage,
+            0x000..=0x7FF => InformationIdMessageType::StandardMessage,
             0x800..=0xFFF => InformationIdMessageType::OemSpecificMessage,
             _ => unreachable!(),
         }
@@ -225,8 +225,6 @@ pub enum UserType {
     Bmc = 0x0b,
     /// Basic Input/Output System.
     Bios = 0x01,
-    /// Reserved user type (Undefined).
-    Reserved,
 }
 
 impl UserId {
@@ -241,7 +239,7 @@ impl UserId {
             0x10 => UserType::EntityOtherUbpu,
             0x0b => UserType::Bmc,
             0x01 => UserType::Bios,
-            _ => UserType::Reserved,
+            _ => unreachable!(),
         }
     }
 
