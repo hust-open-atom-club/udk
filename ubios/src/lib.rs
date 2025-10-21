@@ -87,6 +87,20 @@ pub enum MessageFlag {
 #[repr(transparent)]
 pub struct ModuleId(u16);
 
+impl ModuleId {
+    /// Returns `true` if this is a standard module ID (0x0000 - 0xEFFF).
+    #[inline]
+    pub const fn is_standard(&self) -> bool {
+        (self.0 & 0xC000) == 0x0000
+    }
+
+    /// Returns `true` if this is a OEM-specific module ID (0xF000 - 0xFFFF).
+    #[inline]
+    pub const fn is_oem_specific(&self) -> bool {
+        (self.0 & 0xC000) == 0xC000
+    }
+}
+
 /// UBIOS call identifier.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 #[repr(transparent)]
@@ -130,12 +144,66 @@ impl NotifyId {
 #[repr(transparent)]
 pub struct FunctionId(u16);
 
-/// UBIOS function identifier.
+/// UBIOS Function ID Types.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub enum FunctionIDType {
+    SystemFunction,
+    BatteryFunction,
+    RASFunction,
+    SecurityFunction,
+    Reserved,
+    OEMFunction,
+}
+
+impl FunctionId {
+    /// Returns the function ID type.
+    /// System Function: 0x000 - 0x0FF.
+    /// Battery Function: 0x100 - 0x1FF.
+    /// RAS Function: 0x200 - 0x2FF.
+    /// Security Function: 0x300 - 0x3FF.
+    /// Reserved: 0x400 - 0x7FF.
+    /// OEM Function: 0x800 - 0xFFF.
+    #[inline]
+    pub const fn function_type(self) -> FunctionIDType {
+        match self.0 {
+            0x000..=0x0FF => FunctionIDType::SystemFunction,
+            0x100..=0x1FF => FunctionIDType::BatteryFunction,
+            0x200..=0x2FF => FunctionIDType::RASFunction,
+            0x300..=0x3FF => FunctionIDType::SecurityFunction,
+            0x400..=0x7FF => FunctionIDType::Reserved,
+            0x800..=0xFFF => FunctionIDType::OEMFunction,
+            _ => unreachable!(),
+        }
+    }
+}
+
+/// UBIOS information identifier.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 #[repr(transparent)]
 pub struct InformationId(u16);
 
-// TODO function/information impl(if have)
+/// UBIOS Information Message Types.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub enum InformationIdMessageType {
+    /// Standard Message Type.
+    StandardMessage,
+    /// OEM-specific Message Type.
+    OemSpecificMessage,
+}
+
+impl InformationId {
+    /// Returns the message type of the information ID.
+    /// Standard: 0x000 - 0x07FF.
+    /// OEM-specific: 0x800 - 0xFFF.
+    #[inline]
+    pub const fn message_type(self) -> InformationIdMessageType {
+        match self.0 & 0xFFF {
+            0x000..=0x07FF => InformationIdMessageType::StandardMessage,
+            0x800..=0xFFF => InformationIdMessageType::OemSpecificMessage,
+            _ => unreachable!(),
+        }
+    }
+}
 
 /// Non-zero UBIOS user identifier.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
