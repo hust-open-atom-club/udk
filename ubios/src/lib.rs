@@ -41,7 +41,7 @@ impl MessageId {
     #[inline]
     pub const fn call_id(self) -> Option<CallId> {
         match self.flag() {
-            MessageFlag::CallId => Some(CallId(self.0)),
+            MessageFlag::CallId => Some(CallId(self)),
             _ => None,
         }
     }
@@ -52,8 +52,20 @@ impl MessageId {
         matches!(self.flag(), MessageFlag::CallId)
     }
 
-    // TODO notify_id(self)
-    // TODO is_notify_id(self)
+    /// Converts from `MessageId` to `Option<NotifyId>`.
+    #[inline]
+    pub const fn notify_id(self) -> Option<NotifyId> {
+        match self.flag() {
+            MessageFlag::NotifyId => Some(NotifyId(self)),
+            _ => None,
+        }
+    }
+
+    /// Returns `true` if the message ID is a `NotifyId`.
+    #[inline]
+    pub const fn is_notify_id(self) -> bool {
+        matches!(self.flag(), MessageFlag::NotifyId)
+    }
 }
 
 /// Flags in the UVB message identifier.
@@ -78,20 +90,40 @@ pub struct ModuleId(u16);
 /// UBIOS call identifier.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 #[repr(transparent)]
-pub struct CallId(u32);
+pub struct CallId(MessageId);
 
 impl CallId {
     /// Get the function id of current call.
     #[inline]
     pub const fn function_id(self) -> FunctionId {
-        FunctionId(MessageId(self.0).function_or_information_id_raw())
+        FunctionId(self.0.function_or_information_id_raw())
+    }
+
+    /// Get the module id of current call
+    #[inline]
+    pub const fn module_id(self) -> ModuleId {
+        self.0.module_id()
     }
 }
 
 /// UBIOS notify identifier.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 #[repr(transparent)]
-pub struct NotifyId(u32);
+pub struct NotifyId(MessageId);
+
+impl NotifyId {
+    /// Get the function id of current notify.
+    #[inline]
+    pub const fn function_id(self) -> FunctionId {
+        FunctionId(self.0.function_or_information_id_raw())
+    }
+
+    /// Get the module id of current notify
+    #[inline]
+    pub const fn module_id(self) -> ModuleId {
+        self.0.module_id()
+    }
+}
 
 // TODO information_id(self)
 
