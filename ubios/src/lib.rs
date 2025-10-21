@@ -112,10 +112,10 @@ impl CallId {
 pub struct NotifyId(MessageId);
 
 impl NotifyId {
-    /// Get the function id of current notify.
+    /// Get the information id of current notify.
     #[inline]
-    pub const fn function_id(self) -> FunctionId {
-        FunctionId(self.0.function_or_information_id_raw())
+    pub const fn information_id(self) -> InformationId {
+        InformationId(self.0.function_or_information_id_raw())
     }
 
     /// Get the module id of current notify
@@ -125,14 +125,17 @@ impl NotifyId {
     }
 }
 
-// TODO information_id(self)
-
 /// UBIOS function identifier.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 #[repr(transparent)]
 pub struct FunctionId(u16);
 
-// TODO pub struct InformationId
+/// UBIOS function identifier.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+#[repr(transparent)]
+pub struct InformationId(u16);
+
+// TODO function/information impl(if have)
 
 /// Non-zero UBIOS user identifier.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
