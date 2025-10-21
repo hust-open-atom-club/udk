@@ -1,5 +1,10 @@
 #![no_std]
 
+mod tables;
+
+// TODO re-export other tables
+pub use tables::RootTable;
+
 use core::num::NonZeroU32;
 
 /// UVB message identifier.
