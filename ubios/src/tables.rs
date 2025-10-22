@@ -3,7 +3,7 @@
 //! Need delete later
 #![allow(dead_code)]
 
-use crate::{CallId, NotifyId, UserId};
+use crate::{NotifyId, UserId};
 
 /// For general header field.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -55,7 +55,11 @@ impl RootTable {}
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(C, align(8))]
 pub struct MemoryMapTable {
-    /// Table name, "mem_map_tbl\0".
+    /// Table name, "memory_map\0".
+    ///
+    /// Note: The document specifies that the field name memory_map occupies 11 bytes,
+    /// plus 1 byte for type and 4 bytes for length, ensuring that the data starting
+    /// address is 8-byte aligned.
     pub name: [u8; 11],
     /// Field type.
     pub field_type: u8,
@@ -166,10 +170,11 @@ pub struct CallIdServiceOdGroup {
     ///
     /// If UVB is used, it is represented as the index of UVB.
     pub index: u8,
-    /// Indicates which Call ID the component supports.
-    pub call_id: [CallId; 512],
     /// Instruct the specific component to forward the message.
     pub forwarder: UserId,
+    // TODO
+    // Indicates which Call ID the component supports.
+    // pub call_id: List<CallId>
 }
 
 // TODO
@@ -196,10 +201,11 @@ impl CallIdServiceUb {}
 pub struct CallIdServiceTable {
     /// The Call ID Service Object Description Header.
     pub header: CallIdServiceOdHeader,
-    /// The Call ID Service Object Description Group.
-    pub groups: [CallIdServiceOdGroup; 512],
     /// The Call ID Service Ub.
     pub ub: CallIdServiceUb,
+    // TODO
+    // The Call ID Service Object Description Group.
+    // pub groups: List<CallIdServiceOdGroup>,
 }
 
 // TODO
@@ -219,8 +225,9 @@ impl UvbOdHeader {}
 pub struct UvbOdMember {
     /// When acquiring the window, read back the previously written User ID after a delay of `X` ms.
     pub delay: u32,
-    /// A window has a Windows description.
-    pub wd: [UvbWindowDescript; 512],
+    // TODO
+    // A window has a Windows description.
+    // pub wd: List<UvbWindowDescript>,
 }
 
 // TODO
@@ -255,8 +262,9 @@ impl UvbWindowDescript {}
 pub struct UvbTable {
     /// The Uvb header field.
     pub header: UvbOdHeader,
-    /// The Uvb member field.
-    pub member: [UvbOdMember; 512],
+    // TODO
+    // The Uvb member field.
+    // pub member: List<UvbOdMember>,
 }
 
 // TODO
@@ -311,8 +319,9 @@ pub struct NotifyInfoRingBufferData {
     pub notify_id: NotifyId,
     /// Excludes the Notify ID and data length fields.
     pub length: u32,
-    /// The data is determined by the Information ID.
-    pub raw_data: [u8; 512],
+    // TODO
+    // The data is determined by the Information ID.
+    // pub raw_data: [u8; ?],
 }
 
 // TODO
