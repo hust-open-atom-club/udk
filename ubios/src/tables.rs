@@ -1,5 +1,8 @@
 //! UBIOS system information tables (Section 11.3).
 
+//! Need delete later
+#![allow(dead_code)]
+
 use crate::{CallId, NotifyId, UserId};
 
 /// For general header field.
@@ -19,6 +22,9 @@ struct GeneralHeader {
     /// Checksum and padding.
     pub checksum: u32,
 }
+
+// TODO
+impl GeneralHeader {}
 
 /// UBIOS information index table (the Root table).
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -42,6 +48,9 @@ pub struct RootTable {
     pub _reserved_0x34: [u8; 6],
 }
 
+// TODO
+impl RootTable {}
+
 /// UBIOS memory map table.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(C, align(8))]
@@ -64,6 +73,9 @@ pub struct MemoryMapTable {
     pub checksum: u32,
 }
 
+// TODO
+impl MemoryMapTable {}
+
 /// UBIOS memory map region table.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(C, align(8))]
@@ -81,6 +93,9 @@ pub struct MemoryMapRegionTable {
     /// Reserved field 5.
     pub _reserved: [u8; 5],
 }
+
+// TODO
+impl MemoryMapTable {}
 
 /// UBIOS memory region type.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -118,6 +133,9 @@ pub enum MemoryReliability {
 #[repr(C)]
 pub struct CallIdServiceOdHeader(GeneralHeader);
 
+// TODO
+impl CallIdServiceOdHeader {}
+
 /// UBIOS Call ID service group usage type.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(C)]
@@ -154,6 +172,9 @@ pub struct CallIdServiceOdGroup {
     pub forwarder: UserId,
 }
 
+// TODO
+impl CallIdServiceOdGroup {}
+
 /// UBIOS Call ID service ub.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(C)]
@@ -165,6 +186,9 @@ pub struct CallIdServiceUb {
     /// Refer to [CallIdServiceOdGroup::forwarder].
     pub forwarder: UserId,
 }
+
+// TODO
+impl CallIdServiceUb {}
 
 /// UBIOS Call ID service table.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -178,12 +202,18 @@ pub struct CallIdServiceTable {
     pub ub: CallIdServiceUb,
 }
 
+// TODO
+impl CallIdServiceTable {}
+
 /// UBIOS Uvb object description header field.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(C)]
 pub struct UvbOdHeader(GeneralHeader);
 
-/// UBIOS Uvb Object Description Member Field.
+// TODO
+impl UvbOdHeader {}
+
+/// UBIOS Uvb object description member field.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(C)]
 pub struct UvbOdMember {
@@ -192,6 +222,9 @@ pub struct UvbOdMember {
     /// A window has a Windows description.
     pub wd: [UvbWindowDescript; 512],
 }
+
+// TODO
+impl UvbOdMember {}
 
 /// UBIOS Ubv window description.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -213,6 +246,9 @@ pub struct UvbWindowDescript {
     pub size: u32,
 }
 
+// TODO
+impl UvbWindowDescript {}
+
 /// UBIOS Uvb table.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(C)]
@@ -223,10 +259,16 @@ pub struct UvbTable {
     pub member: [UvbOdMember; 512],
 }
 
+// TODO
+impl UvbTable {}
+
 /// The ISA call header field.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(C)]
 pub struct IsaCallHeader(GeneralHeader);
+
+// TODO
+impl IsaCallHeader {}
 
 /// The ISA call buffer type.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -234,6 +276,9 @@ pub struct IsaCallHeader(GeneralHeader);
 pub enum IsaCallBufferType {
     Uvb = 2,
 }
+
+// TODO
+impl IsaCallBufferType {}
 
 /// UBIOS ISA call table
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -247,10 +292,16 @@ pub struct IsaCallTable {
     pub buffer_index: u8,
 }
 
+// TODO
+impl IsaCallTable {}
+
 /// UBIOS Notify Info object description header field.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(C)]
 pub struct NotifyInfoOdHeader(GeneralHeader);
+
+// TODO
+impl NotifyInfoOdHeader {}
 
 /// UBIOS Notify Info ring buffer data field.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -263,6 +314,9 @@ pub struct NotifyInfoRingBufferData {
     /// The data is determined by the Information ID.
     pub raw_data: [u8; 512],
 }
+
+// TODO
+impl NotifyInfoRingBufferData {}
 
 /// UBIOS Notify Info ring buffer struct.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -282,6 +336,9 @@ pub struct NotifyInfoRingBuffer {
     pub data: NotifyInfoRingBufferData,
 }
 
+// TODO
+impl NotifyInfoRingBuffer {}
+
 /// UBIOS Notify Info IRQ clear struct.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(C)]
@@ -294,6 +351,9 @@ pub struct NotifyInfoIrqClear {
     pub value: u64,
 }
 
+// TODO
+impl NotifyInfoIrqClear {}
+
 /// UBIOS Notify Info IRQ.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 #[repr(C)]
@@ -303,6 +363,9 @@ pub struct NotifyInfoIrq {
     /// Information used to clear the interrupt status.
     pub clear: NotifyInfoIrqClear,
 }
+
+// TODO
+impl NotifyInfoIrq {}
 
 /// UBIOS Notify Info table.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
@@ -317,5 +380,8 @@ pub struct NotifyInfoTable {
     /// Interrupt request information.
     pub irq: NotifyInfoIrq,
 }
+
+// TODO
+impl NotifyInfoTable {}
 
 // TODO unit tests on: 1. structure field offsets 2. #[derive]'d features
